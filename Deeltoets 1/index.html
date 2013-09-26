@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Threesome Ultimate Frisbee - Game</title>
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+
+        <header>
+            <h1><span>Tournament: </span>Amsterdam Ultimate Autumn</h1>
+        </header>
+        <nav>
+            <ol>
+                <li><a href="#/schedule">Schedule page</a></li>
+                <li><a href="#/game">Game page</a></li>
+                <li><a href="#/ranking">Ranking page</a></li>
+            </ol>
+        </nav>
+
+        <article> 
+            <section data-route="schedule">
+                <h1 data-bind="title"></h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Datum:</th>
+                            <th>Team 1:</th>
+                            <th>Score team 1:</th>
+                            <th>Score team 2:</th>
+                            <th>Team 2:</th>
+                            <th>View game:</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="items">                           
+                        <tr>
+                            <td data-bind="date"></td>
+                            <td data-bind="team1"></td>
+                            <td data-bind="team1Score"></td>
+                            <td data-bind="team2Score"></td>
+                            <td data-bind="team2"></td>
+                            <td><a href="#/game">View</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            <section data-route="game">
+                <h1 data-bind="title"></h1>
+                 <table>
+                    <thead>
+                        <tr>
+                            <th>Score:</th>
+                            <th>Team 1:</th>
+                            <th>Score team 1:</th>
+                            <th>Score team 2:</th>
+                            <th>Team 2:</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="items">
+                        <tr>
+                            <td data-bind="score"></td>
+                            <td data-bind="team1"></td>
+                            <td data-bind="team1Score"></td>
+                            <td data-bind="team2Score"></td>
+                            <td data-bind="team2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+             <section data-route="ranking">
+                <h1 data-bind="title"></h1>
+                 <table>
+                    <thead>
+                        <tr>
+                            <th>Team:</th>
+                            <th>Win:</th>
+                            <th>Lost:</th>
+                            <th>Points Win:</th>
+                            <th>Points Lost;</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="items">
+                        <tr>
+                            <td data-bind="team"></td>
+                            <td data-bind="Win"></td>
+                            <td data-bind="Lost"></td>
+                            <td data-bind="Pw"></td>
+                            <td data-bind="Pl"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </article>
+
+	<!-- Libs -->
+	<script src="js/lib/routie.min.js"></script>
+	<script src="js/lib/ready.min.js" type="text/javascript"></script>
+	<script src="js/lib/qwery.min.js" type="text/javascript"></script>
+	<script src="js/lib/transparancy.min.js" type="text/javascript"></script>
+
+	<!-- Application -->
+	<script src="js/app.js"></script>
+    </body>
+</html>
