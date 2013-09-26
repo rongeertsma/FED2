@@ -77,16 +77,6 @@ thead {
 	color: red;
 	font-size: 180%;
 }
-
-/* Test data*/
-pre, pre header{
-	display:block;
-	margin-top: 20em;
-	background-color: rgba(0, 0, 0, 0.1);
-	font-size: 80%;
-	line-height: 100%;
-}
-
 article > section {
 	display: none;
 }
@@ -102,6 +92,6 @@ article > section.active {
 		width: 100%;
 		display:block;
 		margin:0;
-		padding: 0;
+		padding: 0.5em 0;
 	}
 }

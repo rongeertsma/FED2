@@ -93,10 +93,10 @@ var APP = APP || {};
 
 		change: function () {
             var route = window.location.hash.slice(2),
-                sections = qwery('section[data-route]'),
-                section = qwery('[data-route=' + route + ']')[0];  
-                navLinks = qwery('nav ol li a');
-                navLink = qwery('nav ol li a[href=#/' + route + ']')[0];
+          		sections = qwery('section[data-route]'),
+            	section = qwery('[data-route=' + route + ']')[0],  
+            	navLinks = qwery('nav ol li a'),
+            	navLink = qwery('nav ol li a[href=#/' + route + ']')[0];
 
             // Show active section, hide all other
             if (section) {
@@ -127,4 +127,4 @@ var APP = APP || {};
 	  APP.controller.init();
 	});
 
-}()); 
+}());
