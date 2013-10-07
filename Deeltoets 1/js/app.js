@@ -84,6 +84,15 @@ var APP = APP || {};
 			    	Transparency.render(qwery('[data-route=ranking]')[0], APP.ranking);
 			    	APP.router.change();
 			    },
+			    '/movies': function() {
+			    	promise.get('http://dennistel.nl/movies').then(function(error, text, xhr) {
+					    if (error) {
+					        alert('Error ' + xhr.status);
+					        return;
+					    }
+					    Transparency.render(qwery('[data-route=movies]')[0], JSON.parse(text));
+					});
+			    },
 			    '*': function() {
 	  				Transparency.render(qwery('[data-route=schedule]')[0], APP.schedule);
 	  				APP.router.change();
