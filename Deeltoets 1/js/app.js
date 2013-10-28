@@ -2,111 +2,65 @@ var APP = APP || {};
 
 (function(){
 
+	APP.settings = {
+		loader : document.getElementById('floatingBarsG')
+	};
+
+	APP.movies = {};
 	// Data
 	APP.schedule = {
-		title:'Schedule',
-		items: [
-		    { date: "Monday, 9:00am", team1: "Chasing", team1Score: "13", team2: "Amsterdam Money Gang", team2Score: "9"},
-		    { date: "Monday, 9:00am", team1: "Boomsquad", team1Score: "15", team2: "Beast Amsterdam", team2Score: "11"},
-		    { date: "Monday, 10:00am", team1: "Beast Amsterdam", team1Score: "14", team2: "Amsterdam Money Gang", team2Score: "12"},
-		    { date: "Monday, 10:00am", team1: "Chasing", team1Score: "5", team2: "Burning Snow", team2Score: "15"},
-		    { date: "Monday, 11:00am", team1: "Boomsquad", team1Score: "11", team2: "Amsterdam Money Gang", team2Score: "15"},    
-		    { date: "Monday, 11:00am", team1: "Burning Snow", team1Score: "15", team2: "Beast Amsterdam", team2Score: "6"},
-		    { date: "Monday, 12:00pm", team1: "Chasing", team1Score: "8", team2: "Beast Amsterdam", team2Score: "15"},
-		    { date: "Monday, 12:00pm", team1: "Boomsquad", team1Score: "15", team2: "Burning Snow", team2Score: "8"},
-		    { date: "Monday, 1:00pm", team1: "Chasing", team1Score: "15", team2: "Boomsquad", team2Score: "14"},
-		    { date: "Monday, 1:00pm", team1: "Burning Snow", team1Score: "15", team2: "Amsterdam Money Gang", team2Score: "11"}
-	    ]
     };
 
 	APP.game = {
-		title:'Game',
-		items: [
-		    { score: "1", team1: "Boomsquad", team1Score: "1", team2: "Burning Snow", team2Score: "0"},
-		    { score: "2", team1: "Boomsquad", team1Score: "2", team2: "Burning Snow", team2Score: "0"},
-		    { score: "3", team1: "Boomsquad", team1Score: "2", team2: "Burning Snow", team2Score: "1"},
-		    { score: "4", team1: "Boomsquad", team1Score: "2", team2: "Burning Snow", team2Score: "2"},
-		    { score: "5", team1: "Boomsquad", team1Score: "3", team2: "Burning Snow", team2Score: "2"},
-		    { score: "6", team1: "Boomsquad", team1Score: "4", team2: "Burning Snow", team2Score: "2"},
-		    { score: "7", team1: "Boomsquad", team1Score: "5", team2: "Burning Snow", team2Score: "2"},
-		    { score: "8", team1: "Boomsquad", team1Score: "5", team2: "Burning Snow", team2Score: "3"},
-		    { score: "9", team1: "Boomsquad", team1Score: "6", team2: "Burning Snow", team2Score: "3"},
-		    { score: "10", team1: "Boomsquad", team1Score: "7", team2: "Burning Snow", team2Score: "3"},
-		    { score: "11", team1: "Boomsquad", team1Score: "7", team2: "Burning Snow", team2Score: "4"},
-		    { score: "12", team1: "Boomsquad", team1Score: "8", team2: "Burning Snow", team2Score: "4"},
-		    { score: "13", team1: "Boomsquad", team1Score: "8", team2: "Burning Snow", team2Score: "5"},
-		    { score: "14", team1: "Boomsquad", team1Score: "8", team2: "Burning Snow", team2Score: "6"},
-		    { score: "15", team1: "Boomsquad", team1Score: "9", team2: "Burning Snow", team2Score: "6"},
-		    { score: "16", team1: "Boomsquad", team1Score: "9", team2: "Burning Snow", team2Score: "7"},
-		    { score: "17", team1: "Boomsquad", team1Score: "10", team2: "Burning Snow", team2Score: "7"},
-		    { score: "18", team1: "Boomsquad", team1Score: "11", team2: "Burning Snow", team2Score: "7"},
-		    { score: "19", team1: "Boomsquad", team1Score: "12", team2: "Burning Snow", team2Score: "7"},
-		    { score: "20", team1: "Boomsquad", team1Score: "13", team2: "Burning Snow", team2Score: "7"},
-		    { score: "21", team1: "Boomsquad", team1Score: "14", team2: "Burning Snow", team2Score: "7"},
-		    { score: "22", team1: "Boomsquad", team1Score: "14", team2: "Burning Snow", team2Score: "8"},
-		    { score: "23", team1: "Boomsquad", team1Score: "15", team2: "Burning Snow", team2Score: "8"}
-		]
     };
 
 	APP.ranking = {
-		title:'Ranking',
-		items: [
-		    { team: "Chasing", Win: "2", Lost: "2", Sw: "7", Sl: "9", Pw: "35", Pl: "39"},
-		    { team: "Boomsquad", Win: "2", Lost: "2", Sw: "9", Sl: "8", Pw: "36", Pl: "34"},
-		    { team: "Burning Snow", Win: "3", Lost: "1", Sw: "11", Sl: "4", Pw: "36", Pl: "23"},
-		    { team: "Beast Amsterdam", Win: "2", Lost: "2", Sw: "6", Sl: "8", Pw: "30", Pl: "34"},
-		    { team: "Amsterdam Money Gang", Win: "1", Lost: "3", Sw: "6", Sl: "10", Pw: "30", Pl: "37"}
-		]
     };
 
 	// Controller
 	APP.controller = {
 		init: function () {
-			APP.router.init();		
+			APP.router.init();
+			APP.gestureControl();
+			APP.pullRefresh();		
 		}
 	}
 
 	// Router
 	APP.router = {
 		init: function () {
+
 			//Routes
 	  		routie({
 			    '/schedule': function() {
-	  				Transparency.render(qwery('[data-route=schedule]')[0], APP.schedule);
-	  				APP.router.change();
+			    	APP.settings.loader.style.display = 'block';
+			    	APP.dataFetcher('schedule', 'https://api.leaguevine.com/v1/games/?tournament_id=19389&pool_id=19222&order_by=[start_time]&fields=[start_time%2Cteam_1%2Cteam_1_score%2Cteam_2%2Cteam_2_score%2Cid]');
 				},
-			    '/game': function() {
-			    	Transparency.render(qwery('[data-route=game]')[0], APP.game);
-			    	APP.router.change();
+			    '/game/*': function() {
+			    	APP.settings.loader.style.display = 'block';
+			    	var test = window.location.hash.slice(7);
+			    	APP.dataFetcher('game', 'https://api.leaguevine.com/v1/game_scores/?access_token=9147aea9c2&game_id='+test+'&fields=%5Bteam_1%2Cteam_1_score%2Cteam_2%2Cteam_2_score%5D');
 			    },
-
 			    '/ranking': function() {
-			    	Transparency.render(qwery('[data-route=ranking]')[0], APP.ranking);
-			    	APP.router.change();
+			    	APP.settings.loader.style.display = 'block';
+			    	APP.dataFetcher('ranking', 'https://api.leaguevine.com/v1/pools/?pool_ids=%5B19222%5D&order_by=%5B%5D&fields=%5Bstandings%5D&access_token=9147aea9c2');
 			    },
 			    '/movies': function() {
-			    	promise.get('http://dennistel.nl/movies').then(function(error, text, xhr) {
-					    if (error) {
-					        alert('Error ' + xhr.status);
-					        return;
-					    }
-					    Transparency.render(qwery('[data-route=movies]')[0], JSON.parse(text));
-					});
 			    },
 			    '*': function() {
-	  				Transparency.render(qwery('[data-route=schedule]')[0], APP.schedule);
-	  				APP.router.change();
+			    	APP.settings.loader.style.display = 'block';
+			    	APP.dataFetcher('schedule', 'https://api.leaguevine.com/v1/games/?tournament_id=19389&pool_id=19222&order_by=[start_time]&fields=[start_time%2Cteam_1%2Cteam_1_score%2Cteam_2%2Cteam_2_score%2Cid]');
 				}
 			});
 		},
 
 		change: function () {
-            var route = window.location.hash.slice(2),
+            var route = window.location.hash.slice(2).replace(/(\/)|[0-9]/g, ''),
           		sections = qwery('section[data-route]'),
             	section = qwery('[data-route=' + route + ']')[0],  
             	navLinks = qwery('nav ol li a'),
             	navLink = qwery('nav ol li a[href=#/' + route + ']')[0];
-
+          
             // Show active section, hide all other
             if (section) {
             	for (var i=0; i < sections.length; i++){
@@ -131,9 +85,385 @@ var APP = APP || {};
 		}
 	};
 
+	// Page
+	APP.page = {
+		schedule: function (data) {
+		    var meerData = data.objects;
+		    var tbodyData = [];
+		    for(var i=0;i < meerData.length-1; i++){
+		    	var obj = meerData[i];
+		    	if(obj.team_1){
+		    		tbodyData[i] = {};
+		    		tbodyData[i].startTime = obj.start_time.slice(11,16);
+		    		tbodyData[i].team1Name = obj.team_1.name;
+		    		tbodyData[i].team2Name = obj.team_2.name;
+		    		tbodyData[i].team1Score = obj.team_1_score;
+		    		tbodyData[i].team2Score = obj.team_2_score;
+		    		tbodyData[i].id = obj.id;
+
+		    		directives = {
+
+					  update: {
+					    href: function(params) {
+					      return '#/game/'+this.id;
+					    }
+					  }
+					};
+		    	}
+		    }
+		    
+		    Transparency.render(qwery('[data-bind=schedule]')[0], tbodyData, directives);
+		    APP.router.change();		    
+		},
+
+		game: function (data) {
+
+		    var meerData = data.objects;
+		    
+    		tbodyData = {};
+    		tbodyData.team1Name = data.objects[0].team_1.name;
+    		tbodyData.team2Name = data.objects[0].team_2.name;
+    		tbodyData.team1Score = data.objects[0].team_1_score;
+    		tbodyData.team2Score = data.objects[0].team_2_score;
+		    	
+			APP.settings.loader.style.display = 'none';
+		    Transparency.render(qwery('[data-bind=game]')[0], tbodyData); // tbody
+		    APP.router.change();		    
+
+		},
+
+		ranking: function (data) {
+
+			var meerData = data.objects[0].standings;
+			var tbodyData = [];
+
+		    for(var i=0;i < meerData.length; i++){
+		    	var obj = meerData[i];
+	    		tbodyData[i] = {};
+	    		tbodyData[i].teamName = obj.team.name;
+	    		tbodyData[i].wins = obj.wins;
+	    		tbodyData[i].losses = obj.losses;
+	    		tbodyData[i].pointsScored = obj.points_scored;
+	    		tbodyData[i].pointsAllowed = obj.points_allowed;
+	    		tbodyData[i].plusMinus = obj.plus_minus;
+	    		//tbodyData.sort([wins]);
+		    }
+		    tbodyData.sort(function(a,b){return b.wins - a.wins});
+	    	console.log(tbodyData[1]);
+			Transparency.render(qwery('[data-bind=ranking]')[0], tbodyData);
+			APP.router.change();
+		}
+	}
+
+	APP.dataFetcher = function(page, url) {
+		promise.get(url, {}, {"Accept": "application/json", "Authorization": "bearer 7af3a9e7e8"}).then(function(error, text, xhr) {
+		    if (error) {
+		        alert('Error ' + xhr.status);
+		        return;
+		    }
+
+		    var data = JSON.parse(text);
+
+		    if (page == 'schedule') {
+		    	APP.page.schedule(data);
+		    }
+		    else if (page == 'game') {
+		    	APP.page.game(data);
+		   	}
+		   	else {
+		   		APP.page.ranking(data);
+		   	}
+		   	APP.settings.loader.style.display = 'none';	
+		})
+		
+			
+	}
+
+	APP.dataPusher = function() {
+		APP.settings.loader.style.display = 'block';
+		gameId = window.location.hash.slice(7);
+		team1Scorer = document.getElementById('team1Score').value;
+		team2Scorer = document.getElementById('team2Score').value;
+		isFinal = document.getElementById('finalScore').checked;
+		
+		promise.post('https://api.leaguevine.com/v1/game_scores/', JSON.stringify({"game_id": gameId, "team_1_score": team1Scorer, "team_2_score": team2Scorer, "is_final": isFinal}), {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "bearer 82996312dc"}).then(function(error, text, xhr) {
+		    if (error) {
+		        alert('Error ' + xhr.status);
+		        return;
+		    }
+		    APP.settings.loader.style.display = 'none';
+		})
+
+	};
+
+
+	APP.gestureControl = function() {
+		var el = document.getElementById('body');
+
+		Hammer(el).on("swipeleft", function() {
+		    window.location.href = "#/ranking";
+		});
+		Hammer(el).on("swiperight", function() {
+		    window.location.href = "#/schedule";
+		});
+	}
+
+	APP.setQuantity = function(increaseDecrease, inputId) {
+		var currentQuantity = parseInt(document.getElementById(inputId).value);
+		var newQuantity = currentQuantity;
+		
+		switch(increaseDecrease) {
+			case 1: // increase quantity by 1
+				newQuantity++;
+			break;
+			case 2:// decrease quantity by 1
+				if (currentQuantity > 0) {
+					newQuantity--;
+				}
+			break;
+		}
+
+		document.getElementById(inputId).value = newQuantity;
+	} 
+
+	APP.pullRefresh = function(){
+		(function() {
+        var lastTime = 0;
+        var vendors = ['ms', 'moz', 'webkit', 'o'];
+        for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+            window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+            window.cancelAnimationFrame =
+                    window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+        }
+
+        if (!window.requestAnimationFrame)
+            window.requestAnimationFrame = function(callback, element) {
+                var currTime = new Date().getTime();
+                var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+                var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+                        timeToCall);
+                lastTime = currTime + timeToCall;
+                return id;
+            };
+
+        if (!window.cancelAnimationFrame)
+            window.cancelAnimationFrame = function(id) {
+                clearTimeout(id);
+            };
+    }());
+	   
+	    var PullToRefresh = (function() {
+	        function Main(container, slidebox, slidebox_icon, handler) {
+	            var self = this;
+
+	            this.breakpoint = 80;
+
+	            this.container = container;
+	            this.slidebox = slidebox;
+	            this.slidebox_icon = slidebox_icon;
+	            this.handler = handler;
+
+	            this._slidedown_height = 0;
+	            this._anim = null;
+	            this._dragged_down = false;
+
+	            this.hammertime = Hammer(this.container)
+	                .on("touch dragdown release", function(ev) {
+	                    self.handleHammer(ev);
+	                });
+	        };
+
+
+	        /**
+	         * Handle HammerJS callback
+	         * @param ev
+	         */
+	        Main.prototype.handleHammer = function(ev) {
+	            var self = this;
+
+	            switch(ev.type) {
+	                // reset element on start
+	                case 'touch':
+	                    this.hide();
+	                    break;
+
+	                // on release we check how far we dragged
+	                case 'release':
+	                    if(!this._dragged_down) {
+	                        return;
+	                    }
+
+	                    // cancel animation
+	                    cancelAnimationFrame(this._anim);
+
+	                    // over the breakpoint, trigger the callback
+	                    if(ev.gesture.deltaY >= this.breakpoint) {
+	                        container_el.className = 'pullrefresh-loading';
+	                        pullrefresh_icon_el.className = 'icon loading';
+
+	                        this.setHeight(60);
+	                        this.handler.call(this);
+	                    }
+	                    // just hide it
+	                    else {
+	                        pullrefresh_el.className = 'slideup';
+	                        container_el.className = 'pullrefresh-slideup';
+
+	                        this.hide();
+	                    }
+	                    break;
+
+	                // when we dragdown
+	                case 'dragdown':
+	                    this._dragged_down = true;
+
+	                    // if we are not at the top move down
+	                    var scrollY = window.scrollY;
+	                    if(scrollY > 5) {
+	                        return;
+	                    } else if(scrollY !== 0) {
+	                        window.scrollTo(0,0);
+	                    }
+
+	                    // no requestAnimationFrame instance is running, start one
+	                    if(!this._anim) {
+	                        this.updateHeight();
+	                    }
+
+	                    // stop browser scrolling
+	                    ev.gesture.preventDefault();
+
+	                    // update slidedown height
+	                    // it will be updated when requestAnimationFrame is called
+	                    this._slidedown_height = ev.gesture.deltaY * 0.4;
+	                    break;
+	            }
+	        };
+
+
+	        /**
+	         * when we set the height, we just change the container y
+	         * @param   {Number}    height
+	         */
+	        Main.prototype.setHeight = function(height) {
+	            if(Modernizr.csstransforms3d) {
+	                this.container.style.transform = 'translate3d(0,'+height+'px,0) ';
+	                this.container.style.oTransform = 'translate3d(0,'+height+'px,0)';
+	                this.container.style.msTransform = 'translate3d(0,'+height+'px,0)';
+	                this.container.style.mozTransform = 'translate3d(0,'+height+'px,0)';
+	                this.container.style.webkitTransform = 'translate3d(0,'+height+'px,0) scale3d(1,1,1)';
+	            }
+	            else if(Modernizr.csstransforms) {
+	                this.container.style.transform = 'translate(0,'+height+'px) ';
+	                this.container.style.oTransform = 'translate(0,'+height+'px)';
+	                this.container.style.msTransform = 'translate(0,'+height+'px)';
+	                this.container.style.mozTransform = 'translate(0,'+height+'px)';
+	                this.container.style.webkitTransform = 'translate(0,'+height+'px)';
+	            }
+	            else {
+	                this.container.style.top = height+"px";
+	            }
+	        };
+
+
+	        /**
+	         * hide the pullrefresh message and reset the vars
+	         */
+	        Main.prototype.hide = function() {
+	            container_el.className = '';
+	            this._slidedown_height = 0;
+	            this.setHeight(0);
+	            cancelAnimationFrame(this._anim);
+	            this._anim = null;
+	            this._dragged_down = false;
+	        };
+
+
+	        /**
+	         * hide the pullrefresh message and reset the vars
+	         */
+	        Main.prototype.slideUp = function() {
+	            var self = this;
+	            cancelAnimationFrame(this._anim);
+
+	            pullrefresh_el.className = 'slideup';
+	            container_el.className = 'pullrefresh-slideup';
+
+	            this.setHeight(0);
+
+	            setTimeout(function() {
+	                self.hide();
+	            }, 500);
+	        };
+
+
+	        /**
+	         * update the height of the slidedown message
+	         */
+	        Main.prototype.updateHeight = function() {
+	            var self = this;
+
+	            this.setHeight(this._slidedown_height);
+
+	            if(this._slidedown_height >= this.breakpoint){
+	                this.slidebox.className = 'breakpoint';
+	                this.slidebox_icon.className = 'icon arrow arrow-up';
+	            }
+	            else {
+	                this.slidebox.className = '';
+	                this.slidebox_icon.className = 'icon arrow';
+	            }
+
+	            this._anim = requestAnimationFrame(function() {
+	                self.updateHeight();
+	            });
+	        };
+
+	        return Main;
+	    })();
+
+
+
+	    function getEl(id) {
+	        return document.getElementById(id);
+	    }
+
+	    var container_el = getEl('container');
+	    var pullrefresh_el = getEl('pullrefresh');
+	    var pullrefresh_icon_el = getEl('pullrefresh-icon');
+	    var image_el = getEl('random-image');
+
+	    var refresh = new PullToRefresh(container_el, pullrefresh_el, pullrefresh_icon_el);
+
+	    // update image onrefresh
+	    refresh.handler = function() {
+	    	APP.settings.loader.style.display = 'block';
+	        var self = this;
+	        // a small timeout to demo the loading state
+	        setTimeout(function() {
+	            promise.get('https://api.leaguevine.com/v1/games/?tournament_id=19389&pool_id=19222&order_by=[start_time]&fields=[start_time%2Cteam_1%2Cteam_1_score%2Cteam_2%2Cteam_2_score%2Cid]', {}, {"Accept": "application/json", "Authorization": "bearer 7af3a9e7e8"}).then(function(error, text, xhr) {
+		            if (error) {
+		                alert('Error ' + xhr.status);
+		                return;
+		            }
+
+		            var data = JSON.parse(text);
+
+		        
+		                APP.page.schedule(data);
+		          
+		            APP.settings.loader.style.display = 'none'; 
+		            self.slideUp(); 
+	            })
+	                 
+	        }, 0);
+
+	    };
+	}
+
 	// When DOM loaded, initialize controller
 	domready(function () {
-	  APP.controller.init();
+		APP.controller.init();
 	});
 
 }());
