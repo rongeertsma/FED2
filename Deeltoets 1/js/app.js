@@ -6,16 +6,21 @@ var APP = APP || {};
 		loader : document.getElementById('floatingBarsG')
 	};
 
-	APP.movies = {};
+	APP.movies = {
+		
+	};
 	// Data
 	APP.schedule = {
-    };
+		
+    	};
 
 	APP.game = {
-    };
+		
+    	};
 
 	APP.ranking = {
-    };
+		
+    	};
 
 	// Controller
 	APP.controller = {
@@ -35,7 +40,7 @@ var APP = APP || {};
 			    '/schedule': function() {
 			    	APP.settings.loader.style.display = 'block';
 			    	APP.dataFetcher('schedule', 'https://api.leaguevine.com/v1/games/?tournament_id=19389&pool_id=19222&order_by=[start_time]&fields=[start_time%2Cteam_1%2Cteam_1_score%2Cteam_2%2Cteam_2_score%2Cid]');
-				},
+			    },
 			    '/game/*': function() {
 			    	APP.settings.loader.style.display = 'block';
 			    	var test = window.location.hash.slice(7);
@@ -50,39 +55,39 @@ var APP = APP || {};
 			    '*': function() {
 			    	APP.settings.loader.style.display = 'block';
 			    	APP.dataFetcher('schedule', 'https://api.leaguevine.com/v1/games/?tournament_id=19389&pool_id=19222&order_by=[start_time]&fields=[start_time%2Cteam_1%2Cteam_1_score%2Cteam_2%2Cteam_2_score%2Cid]');
-				}
+				};
 			});
 		},
 
 		change: function () {
-            var route = window.location.hash.slice(2).replace(/(\/)|[0-9]/g, ''),
-          		sections = qwery('section[data-route]'),
-            	section = qwery('[data-route=' + route + ']')[0],  
-            	navLinks = qwery('nav ol li a'),
-            	navLink = qwery('nav ol li a[href=#/' + route + ']')[0];
+            		var route = window.location.hash.slice(2).replace(/(\/)|[0-9]/g, ''),
+	          	sections = qwery('section[data-route]'),
+	            	section = qwery('[data-route=' + route + ']')[0],  
+	            	navLinks = qwery('nav ol li a'),
+	            	navLink = qwery('nav ol li a[href=#/' + route + ']')[0];
           
             // Show active section, hide all other
-            if (section) {
-            	for (var i=0; i < sections.length; i++){
-            		sections[i].classList.remove('active');
-            	}
-            	section.classList.add('active');
-            }
-
-            // Show active link
-            if (navLink) {
-            	for (var i=0; i < navLinks.length; i++){
-            		navLinks[i].classList.remove('active');
-            	}
-            	navLink.classList.add('active');
-            }
-
-            // Default route
-            if (!route) {
-            	sections[0].classList.add('active');
-            	navLinks[0].classList.add('active');
-            }
-		}
+	            if (section) {
+	            	for (var i=0; i < sections.length; i++){
+	            		sections[i].classList.remove('active');
+	            	};
+	            	section.classList.add('active');
+	            };
+	
+	            // Show active link
+	            if (navLink) {
+	            	for (var i=0; i < navLinks.length; i++){
+	            		navLinks[i].classList.remove('active');
+	            	};
+	            	navLink.classList.add('active');
+	            };
+	
+	            // Default route
+	            if (!route) {
+	            	sections[0].classList.add('active');
+	            	navLinks[0].classList.add('active');
+	            };
+		};
 	};
 
 	// Page
@@ -106,11 +111,12 @@ var APP = APP || {};
 					  update: {
 					    href: function(params) {
 					      return '#/game/'+this.id;
-					    }
+					    };
 					  }
 					};
-		    	}
-		    }
+		    	};
+		    };
+		    
 		    
 		    Transparency.render(qwery('[data-bind=schedule]')[0], tbodyData, directives);
 		    APP.router.change();		    
@@ -120,15 +126,15 @@ var APP = APP || {};
 
 		    var meerData = data.objects;
 		    
-    		tbodyData = {};
-    		tbodyData.team1Name = data.objects[0].team_1.name;
-    		tbodyData.team2Name = data.objects[0].team_2.name;
-    		tbodyData.team1Score = data.objects[0].team_1_score;
-    		tbodyData.team2Score = data.objects[0].team_2_score;
+    			tbodyData = {};
+    			tbodyData.team1Name = data.objects[0].team_1.name;
+    			tbodyData.team2Name = data.objects[0].team_2.name;
+    			tbodyData.team1Score = data.objects[0].team_1_score;
+    			tbodyData.team2Score = data.objects[0].team_2_score;
 		    	
 			APP.settings.loader.style.display = 'none';
-		    Transparency.render(qwery('[data-bind=game]')[0], tbodyData); // tbody
-		    APP.router.change();		    
+		    	Transparency.render(qwery('[data-bind=game]')[0], tbodyData); // tbody
+		    	APP.router.change();		    
 
 		},
 
@@ -147,20 +153,20 @@ var APP = APP || {};
 	    		tbodyData[i].pointsAllowed = obj.points_allowed;
 	    		tbodyData[i].plusMinus = obj.plus_minus;
 	    		//tbodyData.sort([wins]);
-		    }
-		    tbodyData.sort(function(a,b){return b.wins - a.wins});
-	    	console.log(tbodyData[1]);
+		    },
+			tbodyData.sort(function(a,b){return b.wins - a.wins});
+	    		console.log(tbodyData[1]);
 			Transparency.render(qwery('[data-bind=ranking]')[0], tbodyData);
 			APP.router.change();
-		}
-	}
+		};
+	};
 
 	APP.dataFetcher = function(page, url) {
 		promise.get(url, {}, {"Accept": "application/json", "Authorization": "bearer 7af3a9e7e8"}).then(function(error, text, xhr) {
 		    if (error) {
 		        alert('Error ' + xhr.status);
 		        return;
-		    }
+		    };
 
 		    var data = JSON.parse(text);
 
@@ -172,12 +178,12 @@ var APP = APP || {};
 		   	}
 		   	else {
 		   		APP.page.ranking(data);
-		   	}
+		   	};
 		   	APP.settings.loader.style.display = 'none';	
 		})
 		
 			
-	}
+	};
 
 	APP.dataPusher = function() {
 		APP.settings.loader.style.display = 'block';
@@ -190,7 +196,7 @@ var APP = APP || {};
 		    if (error) {
 		        alert('Error ' + xhr.status);
 		        return;
-		    }
+		    };
 		    APP.settings.loader.style.display = 'none';
 		})
 
@@ -206,7 +212,7 @@ var APP = APP || {};
 		Hammer(el).on("swiperight", function() {
 		    window.location.href = "#/schedule";
 		});
-	}
+	};
 
 	APP.setQuantity = function(increaseDecrease, inputId) {
 		var currentQuantity = parseInt(document.getElementById(inputId).value);
@@ -219,12 +225,12 @@ var APP = APP || {};
 			case 2:// decrease quantity by 1
 				if (currentQuantity > 0) {
 					newQuantity--;
-				}
+				};
 			break;
-		}
+		};
 
 		document.getElementById(inputId).value = newQuantity;
-	} 
+	};
 
 	APP.pullRefresh = function(){
 		(function() {
@@ -234,7 +240,7 @@ var APP = APP || {};
             window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
             window.cancelAnimationFrame =
                     window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
-        }
+        };
 
         if (!window.requestAnimationFrame)
             window.requestAnimationFrame = function(callback, element) {
