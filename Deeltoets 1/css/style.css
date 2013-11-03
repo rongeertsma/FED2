@@ -33,6 +33,7 @@ nav{
 nav ol{
 	margin: 0;
 	text-align: center;
+
 }
 nav ol li{
 	display: inline-block;
@@ -77,12 +78,16 @@ thead {
 	color: red;
 	font-size: 180%;
 }
-article > section {
-	display: none;
+
+.swipe-wrap > div {
+    width: 100%;
+}
+.swipe-wrap > div > section {
+	display: block;
 }
 
-article > section.active {
-	display: block;
+.swipe-wrap > div > section.active {
+    display: block;
 }
 
 section > article {
@@ -94,6 +99,11 @@ section > article {
     background: #ddd;
     margin-bottom: 1em;
     border: 1px solid #aaa;
+    -moz-transition: background  2s;
+    -webkit-transition: background 2s;
+    -o-transition: background  2s;
+    -ms-transition: background 2s;
+    transition: background 2s;
 }
 
 section > article > a {
@@ -134,7 +144,7 @@ section > article > a > h2:nth-of-type(2) {
     text-align: left;
 }
 
- input[type="text"] {
+input[type="text"] {
  	margin: 0 auto;
 	float: none;
 	font-size: 2em;
@@ -144,20 +154,29 @@ section > article > a > h2:nth-of-type(2) {
 }
 
 form > section {
-	width: auto;
+	width: 40%;
 	float: left;
 	margin: 0 5%;
+    text-align: center;
 }
 
 form > section:last-of-type {
 	clear: both;
-	margin: 0 auto;
+	margin: 1em auto;
+    width: 100%;
 }
 
 form > section > p {
-	width: 100x;
+	width: 107px;
 	text-align: center;
 	background: #F00;
+    margin: 0 auto;
+}
+
+input[type="button"] {
+    font-size: 1em;
+    padding: 1em;
+    margin-top:1em;
 }
 
 @media screen and (max-width: 620px){
@@ -175,17 +194,26 @@ form > section > p {
     section > article > a > h2, h3, h4 {
         font-size: 0.7em;
     }
+
+    form > section > h2 {
+        font-size: 0.7em;
+    }
 }
 
 /* Loader */
 
 #floatingBarsG {
-    position:fixed;
+    position:relative;
     width:66px;
     height:82px;
-    margin-left: 45%;
-    margin-top: -110px;
+    margin: -110px auto 30px;
     display:block;
+}
+
+#floatingBarsG > div {
+    width: 66px;
+    height: 82px;
+    position: absolute;
 }
 
 .blockG { 
@@ -400,6 +428,8 @@ background-color:#FFFFFF}
     -moz-transform: translate3d(0,0,0) scale3d(1,1,1);
     -webkit-transform: translate3d(0,0,0) scale3d(1,1,1);
     -webkit-backface-visibility: hidden;
+    float: left;
+    width: 100%;
 }
 
     /* slide up with small animation */
@@ -495,4 +525,20 @@ background-color:#FFFFFF}
     -ms-animation: rotate 1s linear infinite;
     -moz-animation: rotate 1s linear infinite;
     -webkit-animation: rotate 1s linear infinite;
+}
+
+
+.swipe {
+  overflow: hidden;
+  visibility: hidden;
+  position: relative;
+}
+.swipe-wrap {
+  overflow: hidden;
+  position: relative;
+}
+.swipe-wrap > div {
+  float:left;
+  width:100%;
+  position: relative;
 }

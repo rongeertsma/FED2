@@ -23,106 +23,87 @@
             <ol>
                 <li><a data-ftrans="slide" href="#/schedule">Schedule page</a></li>
                 <li><a data-ftrans="slide" href="#/ranking">Ranking page</a></li>
-                <li><a href="#/movies">Movies page</a></li>
             </ol>
         </nav>
 
         <article> 
             <div id="floatingBarsG">
-                <div class="blockG" id="rotateG_01">
-                </div>
-                <div class="blockG" id="rotateG_02">
-                </div>
-                <div class="blockG" id="rotateG_03">
-                </div>
-                <div class="blockG" id="rotateG_04">
-                </div>
-                <div class="blockG" id="rotateG_05">
-                </div>
-                <div class="blockG" id="rotateG_06">
-                </div>
-                <div class="blockG" id="rotateG_07">
-                </div>
-                <div class="blockG" id="rotateG_08">
+                <div>
+                    <div class="blockG" id="rotateG_01">
+                    </div>
+                    <div class="blockG" id="rotateG_02">
+                    </div>
+                    <div class="blockG" id="rotateG_03">
+                    </div>
+                    <div class="blockG" id="rotateG_04">
+                    </div>
+                    <div class="blockG" id="rotateG_05">
+                    </div>
+                    <div class="blockG" id="rotateG_06">
+                    </div>
+                    <div class="blockG" id="rotateG_07">
+                    </div>
+                    <div class="blockG" id="rotateG_08">
+                    </div>
                 </div>
             </div>
-            <section data-route="schedule" data-bind="schedule">
-                <article>
-                    <a class="update" href="">
-                        <h4 data-bind="startTime"></h4>
-                        <h2 data-bind="team1Name"></h2>
-                        <h3 data-bind="team1Score"></h3>
-                        <h3 data-bind="team2Score"></h3>
-                        <h2 data-bind="team2Name"></h2>
-                    </a>
-                </article>
+            <div id='slider' class='swipe'>
+                <div class='swipe-wrap'>
+                    <div>
+                        <section data-route="schedule" data-bind="schedule">
+                            <article>
+                                <a class="update" href="">
+                                    <h4 data-bind="startTime"></h4>
+                                    <h2 data-bind="team1Name"></h2>
+                                    <h3 data-bind="team1Score"></h3>
+                                    <h3 data-bind="team2Score"></h3>
+                                    <h2 data-bind="team2Name"></h2>
+                                </a>
+                            </article>
+                        </section>
+                    </div>
+                        
+                    <div>
+                         <section data-route="ranking" data-bind="ranking">
+                            <article>
+                                <h2 data-bind="teamName"></h3> 
+                                <p data-bind="wins"></p>
+                                <p data-bind="losses"></p>
+                                <p data-bind="pointsScored"></p>
+                                <p data-bind="pointsAllowed"></p>
+                            </article>
+                        </section>
+                    </div>
 
-            </section>
-            <section data-route="game" data-bind="game">
-                <form>
-                    <section>
-                        <h2 data-bind="team1Name"></h2>
-                    </section>
-                    <section>
-                        <p onclick="APP.setQuantity(1, 'team1Score');">+</p>
-                        <input type="text" id="team1Score" name="team1Score" data-bind="team1Score"></input>
-                        <p onclick="APP.setQuantity(2, 'team1Score');">-</p>
-                    </section>
-                    <section>
-                        <p onclick="APP.setQuantity(1, 'team2Score');">+</p>
-                        <input type="text" id="team2Score" name="team2Score" data-bind="team2Score"></input>
-                        <p onclick="APP.setQuantity(2, 'team2Score');">-</p>
-                    </section>
-                    <section>
-                        <h2 data-bind="team2Name"></h2>
-                    </section>
-                    <section>
-                        <label for="finalScore">Is the score final?</label>
-                        <input id="finalScore" name="finalScore" value="false" type="checkbox" />
-                        <input type="button" onclick="APP.dataPusher()" value="Update"/>
-                    </section>                
-                </form>
-            </section>
-             <section data-route="ranking">
-                 <table>
-                    <thead>
-                        <tr>
-                            <th>Team:</th>
-                            <th>Wins:</th>
-                            <th>Losses:</th>
-                            <th>Points Scored:</th>
-                            <th>Points Allowed:</th>
-                            <th>+/-</th>
-                        </tr>
-                    </thead>
-                    <tbody data-bind="ranking">
-                        <tr>
-                            <td data-bind="teamName"></td>
-                            <td data-bind="wins"></td>
-                            <td data-bind="losses"></td>
-                            <td data-bind="pointsScored"></td>
-                            <td data-bind="pointsAllowed"></td>
-                            <td data-bind="plusMinus"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-            <section data-route="movies">
-                <h1 data-bind="title"></h1>
-                <table>
-                    
-                    <tbody>                           
-                        <tr>
-                            <td data-bind="plus_minus"></td>
-                            <td data-bind="team_id"></td>
-                            <td data-bind="description"></td>
-                            <td data-bind="team2Score"></td>
-                            <td data-bind="team2"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-        </article>
+                    <div>
+                        <section data-route="game" data-bind="game">
+                            <form>
+                                <section>
+                                    <h2 data-bind="team1Name"></h2>
+                                    <p onclick="APP.setQuantity(1, 'team1Score');">+</p>
+                                    <input type="text" id="team1Score" name="team1Score" data-bind="team1Score"></input>
+                                    <p onclick="APP.setQuantity(2, 'team1Score');">-</p>
+                                </section>
+
+                                <section>
+                                    <h2 data-bind="team2Name"></h2>
+                                    <p onclick="APP.setQuantity(1, 'team2Score');">+</p>
+                                    <input type="text" id="team2Score" name="team2Score" data-bind="team2Score"></input>
+                                    <p onclick="APP.setQuantity(2, 'team2Score');">-</p>
+                                </section>
+                      
+                                <section>
+                                    <label for="finalScore">Is the score final?</label>
+                                    <input id="finalScore" name="finalScore" value="false" type="checkbox" />
+                                    <br />
+                                    <input type="button" onclick="APP.dataPusher()" value="Update"/>
+                                </section>                
+                            </form>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </article>    
     </div>
 
 	<!-- Libs -->
@@ -134,8 +115,10 @@
     <script src="js/lib/hammer.min.js" type="text/javascript"></script>
     <script src="js/lib/modernizr.js" type="text/javascript"></script>
     <script src="js/lib/qwest-0.4.2.min.js" type="text/javascript"></script>
+    <script src="js/lib/swipe.js" type="text/javascript"></script>
 
 	<!-- Application -->
 	<script src="js/app.js"></script>
+    
     </body>
 </html>
